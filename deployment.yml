@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Unique key of the Deployment instance
+  name: order-service-deployment
+spec:
+  # 3 Pods should exist at all times.
+  replicas: 3
+  selector:
+    matchLabels:
+      app: order-service-app
+  template:
+    metadata:
+      labels:
+        # Apply this label to pods and default
+        # the Deployment label selector to this value
+        app: order-service-app
+    spec:
+      containers:
+        - name: order-service-app
+          image: chitrangad/order-service:V4
+          ports:
+          - containerPort: 9192
+          env:
+          - name: order-service-app
+            value: ORDER-SERVICE
+          - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            value: http://eureka-server:8761/eureka/
